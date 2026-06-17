@@ -1,0 +1,32 @@
+---
+- name: Install NodeJS Environment
+  hosts: web
+  become: true
+
+  tasks:
+
+    - name: Update packages
+      dnf:
+        name: "*"
+        state: latest
+
+    - name: Install Git
+      dnf:
+        name: git
+        state: present
+
+    - name: Install NodeJS
+      dnf:
+        name: nodejs
+        state: present
+
+    - name: Install npm
+      dnf:
+        name: npm
+        state: present
+
+    - name: Install PM2
+      npm:
+        name: pm2
+        global: yes
+

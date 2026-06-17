@@ -1,0 +1,86 @@
+---
+- name: Deploy TravelMemory
+  hosts: web
+  become: true
+
+  vars:
+    app_dir: /home/ec2-user/TravelMemory
+    backend_url: "http://98.92.177.204:3001"
+    mongodb_ip: "10.0.2.190"
+
+  tasks:
+
+    - name: Clone repository
+      git:
+        repo: "https://github.com/UnpredictablePrashant/TravelMemory.git"
+        dest: "{{ app_dir }}"
+        force: yes
+
+    - name: Change ownership
+      file:
+        path: "{{ app_dir }}"
+        owner: ec2-user
+        group: ec2-user
+        recurse: yes
+
+    - name: Install backend dependencies
+      community.general.npm:
+        path: "{{ app_dir }}/backend"
+
+    - name: Create backend .env
+      copy:
+        dest: "{{ app_dir }}/backend/.env"
+        content: |
+          PORT=3001
+          MONGO_URI=mongodb://{{ mongodb_ip }}:27017/travelmemory
+        owner: ec2-user
+        group: ec2-user
+
+    - name: Install frontend dependencies
+      community.general.npm:
+        path: "{{ app_dir }}/frontend"
+
+    - name: Create frontend .env
+      copy:
+        dest: "{{ app_dir }}/frontend/.env"
+        content: |
+          REACT_APP_BACKEND_URL={{ backend_url }}
+        owner: ec2-user
+        group: ec2-user
+
+    - name: Stop old backend process
+      become_user: ec2-user
+      shell: pm2 delete travelmemory || true
+      ignore_errors: true
+
+    - name: Start backend
+      become_user: ec2-user
+      shell: |
+        pm2 start index.js --name travelmemory
+        pm2 save
+      args:
+        chdir: "{{ app_dir }}/backend"
+
+    - name: Stop old frontend process
+      become_user: ec2-user
+      shell: pm2 delete travelmemory-ui || true
+      ignore_errors: true
+
+    - name: Start frontend
+      become_user: ec2-user
+      shell: |
+        pm2 start "npm start" --name travelmemory-ui
+        pm2 save
+      args:
+        chdir: "{{ app_dir }}/frontend"
+
+    - name: Show PM2 status
+      become_user: ec2-user
+      command: pm2 list
+      register: pm2_status
+      changed_when: false
+
+    - name: Display PM2 status
+      debug:
+        var: pm2_status.stdout_lines
+

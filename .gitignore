@@ -1,0 +1,115 @@
+# =========================
+# Terraform
+# =========================
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+
+# Terraform variable files
+*.tfvars
+*.tfvars.json
+
+# Terraform plan files
+*.tfplan
+plan.out
+
+# Lock file (keep if working in team)
+# .terraform.lock.hcl
+
+# =========================
+# Sensitive Files
+# =========================
+*.pem
+*.key
+*.pub
+.env
+.env.*
+secrets.yml
+vault.yml
+
+# SSH Keys
+keys/
+**/keys/
+
+# =========================
+# Ansible
+# =========================
+*.retry
+ansible.log
+
+# Ansible Vault
+*.vault
+vault_password.txt
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# =========================
+# macOS
+# =========================
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# =========================
+# VS Code
+# =========================
+.vscode/
+
+# =========================
+# IntelliJ
+# =========================
+.idea/
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# Node.js
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# Build Artifacts
+# =========================
+dist/
+build/
+coverage/
+
+# =========================
+# Temporary Files
+# =========================
+tmp/
+temp/
+*.tmp
+
+# =========================
+# TravelMemory Repository
+# =========================
+TravelMemory/node_modules/
+TravelMemory/client/node_modules/
+TravelMemory/server/node_modules/
+
+# =========================
+# MongoDB
+# =========================
+mongodb-data/
+dump/
+
+# =========================
+# Local Testing Files
+# =========================
+
