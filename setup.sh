@@ -9,7 +9,7 @@ echo "Creating project structure..."
 mkdir -p \
     ${PROJECT_NAME}/terraform \
     ${PROJECT_NAME}/ansible/group_vars \
-    ${PROJECT_NAME}/docs
+    ${PROJECT_NAME}/screenshots
 
 touch ${PROJECT_NAME}/terraform/provider.tf
 touch ${PROJECT_NAME}/terraform/variables.tf
